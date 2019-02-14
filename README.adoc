@@ -1,0 +1,26 @@
+= metrics-demo
+
+*Demo for MicroProfile Metrics*
+
+The demo application exposes a rest endoint for CRUD services for an entity named Person. The GET and POST methods use metrics annotations for measuring the invocation time and count of calls resp.
+
+A second service supplies a single custom metrics value by means of a @Gauge annotated method.
+
+The metrics can be retrieved from http://localhost:8080/metrics and include standard and vendor specific values. After using GET or POST requests for http://localhost:8080/metrics-demo/rs/person, application metrics will show up, too, and will reflect the REST calls made.
+
+The application can be deployed into JEE 8 servers with MP Health support, including:
+
+* OpenLiberty (with features `javaee-8.0`, `mpMetrics-1.1` and `monitor-1.0` enabled)
+* Payara (Full or Micro)
+
+The host names and ports used above depend on your configuration:
+
+* OpenLiberty uses port `9080` by default, but the docker image mentioned below configures the server for using `8080` instead.
+* Payara uses port `8080` by default.
+
+If you want to test the application with docker, you can do so by building a docker image with one of the following maven commands:
+
+* OpenLiberty: `mvn -Pdocker-openliberty`
+* Payara: `mvn -Pdocker-payara`
+
+Run the build image by `docker run -d -p 8080:8080 gedoplan/metrics-demo-XXX` with `XXX` replaced by `openliberty` or `payara` resp.

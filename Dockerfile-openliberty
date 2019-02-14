@@ -1,0 +1,5 @@
+FROM openliberty/open-liberty:javaee8
+ADD src/main/openliberty/server.xml /config/
+ADD maven/* /config/dropins/
+
+#TODO Add H2 driver
