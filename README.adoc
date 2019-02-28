@@ -12,15 +12,18 @@ The application can be deployed into JEE 8 servers with MP Health support, inclu
 
 * OpenLiberty (with features `javaee-8.0`, `mpMetrics-1.1` and `monitor-1.0` enabled)
 * Payara (Full or Micro)
+* WildFly (version 16+)
 
 The host names and ports used above depend on your configuration:
 
 * OpenLiberty uses port `9080` by default, but the docker image mentioned below configures the server for using `8080` instead.
 * Payara uses port `8080` by default.
+* WildFly distiguishes between application port `8080` (for `/metrics-demo`) and management port `9990` (for `/metrics`).
 
 If you want to test the application with docker, you can do so by building a docker image with one of the following maven commands:
 
 * OpenLiberty: `mvn -Pdocker-openliberty`
 * Payara: `mvn -Pdocker-payara`
+* Payara: `mvn -Pdocker-wildfly`
 
-Run the build image by `docker run -d -p 8080:8080 gedoplan/metrics-demo-XXX` with `XXX` replaced by `openliberty` or `payara` resp.
+Run the build image by `docker run -d -p 8080:8080 -p 9990:9990 gedoplan/metrics-demo-XXX` with `XXX` replaced by `openliberty`, `payara` or `wildfly` resp. The port mapping `-p 9990:9990` is needed for WildFly only.

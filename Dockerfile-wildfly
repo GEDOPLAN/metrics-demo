@@ -1,0 +1,30 @@
+#FROM jboss/wildfly:16.0.0.Final
+
+###########
+# Image jboss/wildfly:16.0.0.Final is not available yet, so build it manually.
+# Uncomment FROM line above and delete the section marked by ##########
+# once jboss/wildfly:16.0.0.Final becomes available
+
+FROM jboss/base-jdk:11
+
+ENV WILDFLY_VERSION 16.0.0.Final
+ENV JBOSS_HOME /opt/jboss/wildfly
+
+USER root
+
+RUN cd $HOME \
+    && curl -O https://download.jboss.org/wildfly/$WILDFLY_VERSION/wildfly-$WILDFLY_VERSION.tar.gz \
+    && tar xf wildfly-$WILDFLY_VERSION.tar.gz \
+    && mv $HOME/wildfly-$WILDFLY_VERSION $JBOSS_HOME \
+    && rm wildfly-$WILDFLY_VERSION.tar.gz \
+    && chown -R jboss:0 ${JBOSS_HOME} \
+    && chmod -R g+rw ${JBOSS_HOME}
+
+ENV LAUNCH_JBOSS_IN_BACKGROUND true
+
+USER jboss
+###########
+
+ADD maven/* /opt/jboss/wildfly/standalone/deployments/
+ENTRYPOINT ["/opt/jboss/wildfly/bin/standalone.sh", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0"]
+CMD []
